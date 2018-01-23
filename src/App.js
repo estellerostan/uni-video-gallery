@@ -75,6 +75,14 @@ class App extends Component {
                   <button>Ajouter cette video !</button>
               </fieldset>
           </form>
+
+          <ul>
+              {
+                  Object
+                      .keys(this.state.videos)
+                      .map(key => <li key={key}>{this.state.videos[key].url} {this.state.videos[key].titre} {this.state.videos[key].description}</li>)
+              }
+          </ul>
       </div>
     );
   }
