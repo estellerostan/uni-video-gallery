@@ -43,6 +43,8 @@ class App extends Component {
             method: 'POST',
             body: data,
         });
+
+        this.getvideosFromApiAsync('http://localhost:8080/api/videos');
     }
 
     getvideosFromApiAsync(url) {
