@@ -49,3 +49,16 @@ exports.createVideo = function(formData, callback) {
         }
     });
 };
+
+exports.listVideos = function(callback) {
+    MongoClient.connect(url, function(err, db) {
+        if (err) {
+            callback(-1);
+        } else {
+            db.collection('videos')
+                .find()
+                .toArray()
+                .then(arr => callback(arr));
+        }
+    });
+};

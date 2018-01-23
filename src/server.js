@@ -63,3 +63,13 @@ app.post('/api/video', multerData.fields([]), function(req, res) {
         res.send(JSON.stringify(data));
     });
 });
+
+app.get('/api/videos', function(req, res) {
+    mongoDBModule.listVideos(function(data) {
+        const objdData = {
+            msg:"restaurant recherchÃƒÂ©s avec succÃƒÂ¨s",
+            data: data
+        };
+        res.send(JSON.stringify(objdData));
+    });
+});

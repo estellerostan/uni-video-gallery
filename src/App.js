@@ -7,14 +7,17 @@ class App extends Component {
 
         this.connectionResponseMessageFromApiAsync = this.connectionResponseMessageFromApiAsync.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.getvideosFromApiAsync = this.getvideosFromApiAsync.bind(this);
 
         this.state = {
-            apiResponseMessage: ""
+            apiResponseMessage: "",
+            videos: {}
         };
     }
 
     componentDidMount() {
         this.connectionResponseMessageFromApiAsync('http://localhost:8080/api/connection');
+        this.getvideosFromApiAsync('http://localhost:8080/api/videos');
     }
 
     connectionResponseMessageFromApiAsync(url) {
@@ -39,6 +42,16 @@ class App extends Component {
             method: 'POST',
             body: data,
         });
+    }
+
+    getvideosFromApiAsync(url) {
+        fetch(url).then(response => {
+            return response.json();
+        }).then(json => {
+            this.setState({videos : json.data});
+        }).catch((error) => {
+            console.error(error);
+        })
     }
 
     render() {
