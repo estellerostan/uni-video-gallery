@@ -43,6 +43,12 @@ class App extends Component {
         fetch('http://localhost:8080/api/video', {
             method: 'POST',
             body: data,
+        }).then(response => {
+            return response.json();
+        }).then(json => {
+            this.setState({apiResponseMessage : json.message});
+        }).catch((error) => {
+            console.error(error);
         });
 
         this.getvideosFromApiAsync('http://localhost:8080/api/videos');
@@ -61,7 +67,7 @@ class App extends Component {
     render() {
     return (
       <div className="App">
-          {/*/!*<p >Message de réponse API : {this.state.apiResponseMessage}</p>*!/ useful for debug*/}
+          <p >Message de réponse API : {this.state.apiResponseMessage}</p>
 
           <button className="show">Ajouter une video</button>
           <button className="hide">Cacher le formulaire</button>

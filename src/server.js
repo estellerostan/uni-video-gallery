@@ -64,6 +64,26 @@ app.post('/api/video', multerData.fields([]), function(req, res) {
     });
 });
 
+app.post('/api/u-video', multerData.fields([]), function(req, res) {
+    // On va recuperer les donnÃƒÂ©es du formulaire d'envoi
+    // les params sont dans req.body mÃƒÂªme si le formulaire
+    // est envoyÃƒÂ© en multipart
+
+    mongoDBModule.updateVideo(req.body, function(data) {
+        res.send(JSON.stringify(data));
+    });
+});
+
+app.post('/api/d-video', multerData.fields([]), function(req, res) {
+    // On va recuperer les donnÃƒÂ©es du formulaire d'envoi
+    // les params sont dans req.body mÃƒÂªme si le formulaire
+    // est envoyÃƒÂ© en multipart
+
+    mongoDBModule.deleteVideo(req.body, function(data) {
+        res.send(JSON.stringify(data));
+    });
+});
+
 app.get('/api/videos', function(req, res) {
     mongoDBModule.listVideos(function(data) {
         const objdData = {

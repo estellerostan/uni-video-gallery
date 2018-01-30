@@ -30,8 +30,7 @@ exports.createVideo = function(formData, callback) {
 
             // Find the video to save
             collection.findOne({url: formData.url}, function(err, item) {
-                // assert.equal(null, err);
-                // assert.equal(null, item.url);
+                // if (err) throw err;
 
                 if (item == null) {
                     // we don't have a result
@@ -57,28 +56,71 @@ exports.createVideo = function(formData, callback) {
                         });
                 } else {
                     // we have a result
-                    collection
-                    .updateOne({url: formData.url}, toInsert, function (err, result) {
-                        let response;
-
-                        if (err) {
-                            response = {
-                                success: false,
-                                error: err,
-                                msg: "ProblÃƒÂ¨me Ãƒ  l'insertion"
-                            };
-                        } else {
-                            response = {
-                                success: true,
-                                result: result,
-                                error: null,
-                                msg: "Ajout rÃƒÂ©ussi " + result
-                            };
-                        }
-                        callback(response);
-                    });
+                    response = {
+                        success: false,
+                        result: result,
+                        msg: "Impossible : la video existe deja "
+                    };
                 }
             });
+        }
+    });
+};
+
+exports.updateVideo = function(formData, callback) {
+    MongoClient.connect(url, function(err, db) {
+        if (err) {
+            callback(-1);
+        } else {
+            db.collection("videos")
+                .updateOne({url: formData.url}, toInsert, function (err, result) {
+                    let response;
+
+                    if (err) {
+                        response = {
+                            success: false,
+                            error: err,
+                            msg: "ProblÃƒÂ¨me Ãƒ  l'insertion"
+                        };
+                    } else {
+                        response = {
+                            success: true,
+                            result: result,
+                            error: null,
+                            msg: "Ajout rÃƒÂ©ussi " + result
+                        };
+                    }
+                    callback(response);
+                });
+        }
+    });
+};
+
+exports.deleteVideo = function(formData, callback) {
+    MongoClient.connect(url, function(err, db) {
+        if (err) {
+            callback(-1);
+        } else {
+            db.collection("videos")
+                .deleteOne({url: formData.url}, toInsert, function (err, result) {
+                    let response;
+
+                    if (err) {
+                        response = {
+                            success: false,
+                            error: err,
+                            msg: "Probleme"
+                        };
+                    } else {
+                        response = {
+                            success: true,
+                            result: result,
+                            error: null,
+                            msg: "Ajout reussi " + result
+                        };
+                    }
+                    callback(response);
+                });
         }
     });
 };

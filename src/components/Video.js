@@ -1,6 +1,53 @@
 import React from 'react';
+import UpdateVideoForm from './UpdateVideoForm'
 
 class Video extends React.Component {
+    constructor() {
+        super();
+
+        this.updateVideo = this.updateVideo.bind(this);
+        this.deleteVideo = this.deleteVideo.bind(this);
+    }
+
+    updateVideo(event) {
+        event.preventDefault();
+        const data = new FormData(event.target);
+
+        data.set('url', data.get('url'));
+        data.set('title', data.get('title'));
+        data.set('description', data.get('description'));
+
+        fetch('/api/video', {
+            method: 'POST',
+            body: data,
+        }).then(response => {
+            return response.json();
+        }).then(json => {
+            this.setState({apiResponseMessage : json.message});
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+
+    deleteVideo(event) {
+        event.preventDefault();
+        const data = new FormData();
+
+        data.set('url', data.get('url'));
+        data.set('title', data.get('title'));
+        data.set('description', data.get('description'));
+
+        fetch('/api/d-video', {
+            method: 'POST',
+            body: data,
+        }).then(response => {
+            return response.json();
+        }).then(json => {
+            this.setState({apiResponseMessage : json.message});
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
 
     render () {
         const { details, index} = this.props;
@@ -38,6 +85,10 @@ class Video extends React.Component {
                 {details.title}
                 </h3>
                 <p>{details.description}</p>
+
+                <button>Modifier</button>
+                <UpdateVideoForm details={details}/>
+                <button onClick={this.deleteVideo}>Supprimer</button>
             </li>
         )
     }

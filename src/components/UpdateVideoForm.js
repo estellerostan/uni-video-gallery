@@ -15,7 +15,7 @@ class AddVideoForm extends React.Component {
         data.set('title', data.get('title'));
         data.set('description', data.get('description'));
 
-        fetch('/api/video', {
+        fetch('/api/u-video', {
             method: 'POST',
             body: data,
         }).then(response => {
@@ -35,10 +35,10 @@ class AddVideoForm extends React.Component {
 
         <form onSubmit={this.handleSubmit} className="form">
             <fieldset>
-                <legend>Ajout d'une video</legend>
+                <legend>Modification d'une video</legend>
 
                 <label htmlFor="url">Url: </label>
-                <input name="url" required type="url"/>
+                <input name="url" required type="url" placeholder={details.url} value={details.url}/>
 
                 <br/>
 
@@ -52,7 +52,7 @@ class AddVideoForm extends React.Component {
 
                 <br/>
 
-                <button>Ajouter cette video !</button>
+                <button>Modifier cette video</button>
             </fieldset>
         </form>
         )
