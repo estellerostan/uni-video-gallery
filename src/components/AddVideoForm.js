@@ -24,18 +24,25 @@ class AddVideoForm extends React.Component {
     render () {
         return (
         //   ou {(e) => this.createFish(e)}
-        <form onSubmit={this.handleSubmit}>
+
+        <form onSubmit={this.handleSubmit} className="form">
             <fieldset>
                 <legend>Ajout d'une video</legend>
 
                 <label htmlFor="url">Url: </label>
-                <input name="url" required type="text"/>
+                <input name="url" required type="url"/>
+
+                <br/>
 
                 <label htmlFor="title">Titre: </label>
                 <input name="title" required type="text"/>
 
+                <br/>
+
                 <label htmlFor="description">Description: </label>
-                <input name="description" required type="text"/>
+                <textarea name="description" required type="text" rows="10"/>
+
+                <br/>
 
                 <button>Ajouter cette video !</button>
             </fieldset>

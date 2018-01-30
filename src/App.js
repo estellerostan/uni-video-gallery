@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Video from './components/Video'
+import AddVideoForm from './components/AddVideoForm'
 
 class App extends Component {
     constructor() {
@@ -60,24 +61,11 @@ class App extends Component {
     render() {
     return (
       <div className="App">
-          <p >Message de réponse API : {this.state.apiResponseMessage}</p>
+          {/*/!*<p >Message de réponse API : {this.state.apiResponseMessage}</p>*!/ useful for debug*/}
 
-          <form onSubmit={this.handleSubmit}>
-              <fieldset>
-                  <legend>Ajout d'une video</legend>
-
-                  <label htmlFor="url">Url:</label>
-                  <input name="url" required type="text"/>
-
-                  <label htmlFor="title">Titre: </label>
-                  <input name="title" required type="text"/>
-
-                  <label htmlFor="description">Description: </label>
-                  <input name="description" required type="text"/>
-
-                  <button>Ajouter cette video !</button>
-              </fieldset>
-          </form>
+          <button className="show">Ajouter une video</button>
+          <button className="hide">Cacher le formulaire</button>
+          <AddVideoForm/>
 
           <ul>
               {
