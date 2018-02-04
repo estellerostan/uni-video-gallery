@@ -131,8 +131,14 @@ exports.deleteVideo = function(formData, callback) {
         if (err) {
             callback(-1);
         } else {
+            let toInsert = {
+                url: formData.url,
+                title: formData.title,
+                description: formData.description
+            };
+
             db.collection("videos")
-                .deleteOne({url: formData.url}, toInsert, function (err, result) {
+                .deleteOne({url: formData.url}, {$set: toInsert}, function (err, result) {
                     let response;
 
                     if (err) {
@@ -141,6 +147,7 @@ exports.deleteVideo = function(formData, callback) {
                             error: err,
                             msg: "Probleme lors de la suppression"
                         };
+                        callback(response);
                     } else {
                         response = {
                             success: true,
@@ -148,8 +155,8 @@ exports.deleteVideo = function(formData, callback) {
                             error: null,
                             msg: "Suppression reussie "
                         };
+                        callback(response);
                     }
-                    callback(response);
                 });
         }
     });

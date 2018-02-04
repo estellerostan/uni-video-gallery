@@ -103,8 +103,21 @@ app.post('/api/d-video', multerData.fields([]), function(req, res) {
     // les params sont dans req.body mÃƒÂªme si le formulaire
     // est envoyÃƒÂ© en multipart
 
-    mongoDBModule.deleteVideo(req.body, function(data) {
-        res.send(JSON.stringify(data));
+    mongoDBModule.deleteVideo(req.body, function(mongoResponse) {
+        let response;
+
+        if (mongoResponse) {
+            response = {
+                message: mongoResponse.msg
+            }
+        }
+        else {
+            response = {
+                message: "erreur"
+            }
+        }
+
+        res.send(JSON.stringify(response));
     });
 });
 

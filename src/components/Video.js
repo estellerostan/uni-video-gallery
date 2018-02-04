@@ -2,21 +2,28 @@ import React from 'react';
 import UpdateVideoForm from './UpdateVideoForm'
 
 class Video extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.deleteVideo = this.deleteVideo.bind(this);
+
+        this.state = {
+            apiResponseMessage : "",
+            url: props.details.url,
+            title: props.details.title,
+            description: props.details.description
+        }
     }
 
     deleteVideo(event) {
         event.preventDefault();
         const data = new FormData();
 
-        data.set('url', data.get('url'));
-        data.set('title', data.get('title'));
-        data.set('description', data.get('description'));
+        data.set('url', this.state.url);
+        data.set('title', this.state.title);
+        data.set('description', this.state.description);
 
-        fetch('/api/d-video', {
+        fetch('http://localhost:8080/api/d-video', {
             method: 'POST',
             body: data,
         }).then(response => {
@@ -68,6 +75,7 @@ class Video extends React.Component {
                 <UpdateVideoForm details={details}/>
 
                 <button onClick={this.deleteVideo}>Supprimer</button>
+                <p >Message de réponse API : {this.state.apiResponseMessage}</p>
             </li>
         )
     }
