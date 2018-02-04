@@ -1,14 +1,20 @@
 import React from 'react';
 
-class AddVideoForm extends React.Component {
+class UpdateVideoForm extends React.Component {
     constructor(props) {
         super(props);
 
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.state = {
-            apiResponseMessage: props.apiResponseMessage
+            apiResponseMessage: props.apiResponseMessage,
+            title: props.details.title,
+            description: props.details.description
         }
+    }
+
+    onChange(e) {
+        this.setState({[e.target.name]: e.target.value})
     }
 
     handleSubmit(event) {
@@ -32,27 +38,26 @@ class AddVideoForm extends React.Component {
     }
 
     render () {
-        const details = this.props;
+        const details = this.props.details;
 
         return (
-        //   ou {(e) => this.createFish(e)}
 
         <form onSubmit={this.handleSubmit} className="form">
             <fieldset>
                 <legend>Modification d'une video</legend>
 
                 <label htmlFor="url">Url: </label>
-                <input name="url" required type="url" placeholder={details.url} value={details.url}/>
+                <input name="url" required type="url" value={details.url} readOnly/>
 
                 <br/>
 
                 <label htmlFor="title">Titre: </label>
-                <input name="title" required type="text"/>
+                <input name="title" required type="text"  value={this.state.title} onChange={(value) => this.onChange(value)} />
 
                 <br/>
 
                 <label htmlFor="description">Description: </label>
-                <textarea name="description" required type="text" rows="10"/>
+                <textarea name="description" required type="text" rows="10" value={this.state.description} onChange={(value) => this.onChange(value)}  />
 
                 <br/>
 
@@ -65,4 +70,4 @@ class AddVideoForm extends React.Component {
     }
 }
 
-export default AddVideoForm;
+export default UpdateVideoForm;

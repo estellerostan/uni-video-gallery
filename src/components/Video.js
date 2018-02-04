@@ -5,28 +5,7 @@ class Video extends React.Component {
     constructor() {
         super();
 
-        this.updateVideo = this.updateVideo.bind(this);
         this.deleteVideo = this.deleteVideo.bind(this);
-    }
-
-    updateVideo(event) {
-        event.preventDefault();
-        const data = new FormData(event.target);
-
-        data.set('url', data.get('url'));
-        data.set('title', data.get('title'));
-        data.set('description', data.get('description'));
-
-        fetch('/api/video', {
-            method: 'POST',
-            body: data,
-        }).then(response => {
-            return response.json();
-        }).then(json => {
-            this.setState({apiResponseMessage : json.message});
-        }).catch((error) => {
-            console.error(error);
-        });
     }
 
     deleteVideo(event) {
