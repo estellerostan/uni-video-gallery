@@ -16,7 +16,7 @@ exports.createVideo = function(formData, callback) {
             let reponse = reponse = {
                 success: false,
                 error: err,
-                msg: "ProblÃƒÂ¨me lors de l'insertion, erreur de connexion."
+                msg: "Probleme lors de l'insertion, erreur de connexion."
             };
             callback(reponse);
         } else {
@@ -30,37 +30,38 @@ exports.createVideo = function(formData, callback) {
 
             // Find the video to save
             collection.findOne({url: formData.url}, function(err, item) {
-                // if (err) throw err;
+                if (err) callback(err);
+
+                let mongoResponse;
 
                 if (item == null) {
                     // we don't have a result
                     collection
                         .insertOne(toInsert, function (err, result) {
-                            let response;
-
                             if (err) {
-                                response = {
+                                mongoResponse = {
                                     success: false,
                                     error: err,
-                                    msg: "ProblÃƒÂ¨me Ãƒ  l'insertion"
+                                    msg: "Probleme a l'insertion"
                                 };
+                                callback(mongoResponse);
                             } else {
-                                response = {
+                                mongoResponse = {
                                     success: true,
                                     result: result,
-                                    error: null,
-                                    msg: "Ajout rÃƒÂ©ussi " + result
+                                    msg: "Ajout de la video reussi "
                                 };
+                                callback(mongoResponse);
                             }
-                            callback(response);
                         });
                 } else {
                     // we have a result
-                    response = {
+                    mongoResponse = {
                         success: false,
-                        result: result,
-                        msg: "Impossible : la video existe deja "
+                        result: item,
+                        msg: "Impossible de faire l'ajout : la video existe deja "
                     };
+                    callback(mongoResponse);
                 }
             });
         }
@@ -70,28 +71,57 @@ exports.createVideo = function(formData, callback) {
 exports.updateVideo = function(formData, callback) {
     MongoClient.connect(url, function(err, db) {
         if (err) {
-            callback(-1);
+            let reponse = reponse = {
+                success: false,
+                error: err,
+                msg: "Probleme lors de la modification, erreur de connexion."
+            };
+            callback(reponse);
         } else {
-            db.collection("videos")
-                .updateOne({url: formData.url}, toInsert, function (err, result) {
-                    let response;
+            let toInsert = {
+                url: formData.url,
+                title: formData.title,
+                description: formData.description
+            };
 
-                    if (err) {
-                        response = {
-                            success: false,
-                            error: err,
-                            msg: "ProblÃƒÂ¨me Ãƒ  l'insertion"
-                        };
-                    } else {
-                        response = {
-                            success: true,
-                            result: result,
-                            error: null,
-                            msg: "Ajout rÃƒÂ©ussi " + result
-                        };
-                    }
-                    callback(response);
-                });
+            const collection = db.collection("videos");
+
+            // Find the video to save
+            collection.findOne({url: formData.url}, function(err, item) {
+                if (err) callback(err);
+
+                let mongoResponse;
+
+                if (item == null) {
+                    // we don't have a result
+                    mongoResponse = {
+                        success: false,
+                        result: item,
+                        msg: "Impossible de faire la modification : la video n'existe pas "
+                    };
+                    callback(mongoResponse);
+                } else {
+                    // we have a result
+                    collection
+                        .updateOne({url: formData.url}, {$set: toInsert}, function (err, result) {
+                            if (err) {
+                                mongoResponse = {
+                                    success: false,
+                                    error: err,
+                                    msg: "Probleme lors de la modification"
+                                };
+                                callback(mongoResponse);
+                            } else {
+                                mongoResponse = {
+                                    success: true,
+                                    result: result,
+                                    msg: "Modification de la video reussie "
+                                };
+                                callback(mongoResponse);
+                            }
+                    });
+                }
+            });
         }
     });
 };
@@ -109,14 +139,14 @@ exports.deleteVideo = function(formData, callback) {
                         response = {
                             success: false,
                             error: err,
-                            msg: "Probleme"
+                            msg: "Probleme lors de la suppression"
                         };
                     } else {
                         response = {
                             success: true,
                             result: result,
                             error: null,
-                            msg: "Ajout reussi " + result
+                            msg: "Suppression reussie "
                         };
                     }
                     callback(response);

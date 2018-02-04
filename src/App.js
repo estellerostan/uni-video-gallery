@@ -8,7 +8,7 @@ class App extends Component {
         super();
 
         this.connectionResponseMessageFromApiAsync = this.connectionResponseMessageFromApiAsync.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        // this.handleSubmit = this.handleSubmit.bind(this);
         this.getvideosFromApiAsync = this.getvideosFromApiAsync.bind(this);
 
         this.state = {
@@ -32,27 +32,27 @@ class App extends Component {
         })
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-        const data = new FormData(event.target);
-
-        data.set('url', data.get('url'));
-        data.set('title', data.get('title'));
-        data.set('description', data.get('description'));
-
-        fetch('http://localhost:8080/api/video', {
-            method: 'POST',
-            body: data,
-        }).then(response => {
-            return response.json();
-        }).then(json => {
-            this.setState({apiResponseMessage : json.message});
-        }).catch((error) => {
-            console.error(error);
-        });
-
-        this.getvideosFromApiAsync('http://localhost:8080/api/videos');
-    }
+    // handleSubmit(event) {
+    //     event.preventDefault();
+    //     const data = new FormData(event.target);
+    //
+    //     data.set('url', data.get('url'));
+    //     data.set('title', data.get('title'));
+    //     data.set('description', data.get('description'));
+    //
+    //     fetch('http://localhost:8080/api/video', {
+    //         method: 'POST',
+    //         body: data,
+    //     }).then(response => {
+    //         return response.json();
+    //     }).then(json => {
+    //         this.setState({apiResponseMessage : json.message});
+    //     }).catch((error) => {
+    //         console.error(error);
+    //     });
+    //
+    //     this.getvideosFromApiAsync('http://localhost:8080/api/videos');
+    // }
 
     getvideosFromApiAsync(url) {
         fetch(url).then(response => {
@@ -69,9 +69,7 @@ class App extends Component {
       <div className="App">
           <p >Message de réponse API : {this.state.apiResponseMessage}</p>
 
-          <button className="show">Ajouter une video</button>
-          <button className="hide">Cacher le formulaire</button>
-          <AddVideoForm/>
+          <AddVideoForm apiMessage={this.state.apiResponseMessage}/>
 
           <ul>
               {

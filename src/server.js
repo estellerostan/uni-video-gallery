@@ -37,7 +37,6 @@ app.get('/api/connection', function(req, res) {
             }
         }
         res.send(JSON.stringify(response));
-
     });
 });
 
@@ -49,7 +48,7 @@ app.get('/api/connection', function(req, res) {
 // http GET (pour récupérer des données)
 // http POST : pour insérer des données
 // http PUT pour modifier des données
-// http DELETE pour supprimer des données
+// http DELETE pour "Erreur de connexion à la db."supprimer des données
 
 
 // Creation d'un'une video par envoi d'un formulaire
@@ -59,18 +58,43 @@ app.post('/api/video', multerData.fields([]), function(req, res) {
     // les params sont dans req.body mÃƒÂªme si le formulaire
     // est envoyÃƒÂ© en multipart
 
-    mongoDBModule.createVideo(req.body, function(data) {
-        res.send(JSON.stringify(data));
+    mongoDBModule.createVideo(req.body, function(mongoResponse) {
+        let response;
+
+        if (mongoResponse) {
+            response = {
+                message: mongoResponse.msg
+            }
+        }
+        else {
+            response = {
+                message: "erreur"
+            }
+        }
+        res.send(JSON.stringify(response));
     });
 });
 
-app.post('/api/u-video', multerData.fields([]), function(req, res) {
+app.post('/api/u-video', multerData.fields([]), function(req, res) { // TODO: put
     // On va recuperer les donnÃƒÂ©es du formulaire d'envoi
     // les params sont dans req.body mÃƒÂªme si le formulaire
     // est envoyÃƒÂ© en multipart
 
-    mongoDBModule.updateVideo(req.body, function(data) {
-        res.send(JSON.stringify(data));
+    mongoDBModule.updateVideo(req.body, function(mongoResponse) {
+        let response;
+
+        if (mongoResponse) {
+            response = {
+                message: mongoResponse.msg
+            }
+        }
+        else {
+            response = {
+                message: "erreur"
+            }
+        }
+
+        res.send(JSON.stringify(response));
     });
 });
 

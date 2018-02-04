@@ -1,10 +1,14 @@
 import React from 'react';
 
 class AddVideoForm extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.handleSubmit = this.handleSubmit.bind(this);
+
+        this.state = {
+            apiResponseMessage: props.apiResponseMessage
+        }
     }
 
     handleSubmit(event) {
@@ -15,7 +19,7 @@ class AddVideoForm extends React.Component {
         data.set('title', data.get('title'));
         data.set('description', data.get('description'));
 
-        fetch('/api/video', {
+        fetch('http://localhost:8080/api/video', {
             method: 'POST',
             body: data,
         }).then(response => {
@@ -25,13 +29,14 @@ class AddVideoForm extends React.Component {
         }).catch((error) => {
             console.error(error);
         });
+
+        // this.getvideosFromApiAsync('http://localhost:8080/api/videos');
     }
 
     render () {
         const details = this.props;
 
         return (
-        //   ou {(e) => this.createFish(e)}
 
         <form onSubmit={this.handleSubmit} className="form">
             <fieldset>
@@ -53,6 +58,8 @@ class AddVideoForm extends React.Component {
                 <br/>
 
                 <button>Ajouter cette video !</button>
+
+                <p >Message de réponse API : {this.state.apiResponseMessage}</p>
             </fieldset>
         </form>
         )

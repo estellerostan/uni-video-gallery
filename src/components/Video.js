@@ -86,8 +86,8 @@ class Video extends React.Component {
                 </h3>
                 <p>{details.description}</p>
 
-                <button>Modifier</button>
                 <UpdateVideoForm details={details}/>
+
                 <button onClick={this.deleteVideo}>Supprimer</button>
             </li>
         )
