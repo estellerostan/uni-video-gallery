@@ -9,6 +9,8 @@ class App extends Component {
 
         this.connectionResponseMessageFromApiAsync = this.connectionResponseMessageFromApiAsync.bind(this);
         this.getvideosFromApiAsync = this.getvideosFromApiAsync.bind(this);
+        this.addVideo = this.addVideo.bind(this);
+        this.deleteVideo = this.deleteVideo.bind(this);
 
         this.state = {
             apiResponseMessage: "",
@@ -41,18 +43,33 @@ class App extends Component {
         })
     }
 
+    deleteVideo(key) {
+        const videos = {...this.state.videos};
+        delete videos[key];
+        this.setState({videos: videos});
+    }
+
+    addVideo(video) {
+        const videos = {...this.state.videos};
+
+        const timestamp = Date.now();
+        videos[`video-${timestamp}`] = video;
+
+        this.setState({ videos: videos})
+    }
+
     render() {
     return (
       <div className="App">
           <p >Message de réponse API : {this.state.apiResponseMessage}</p>
 
-          <AddVideoForm apiMessage={this.state.apiResponseMessage}/>
+          <AddVideoForm apiMessage={this.state.apiResponseMessage} handler={this.addVideo}/>
 
           <ul>
               {
                   Object
                       .keys(this.state.videos)
-                      .map(key => <Video key={key} index={key} details={this.state.videos[key]}/>)
+                      .map(key => <Video key={key} index={key} details={this.state.videos[key]} videos={this.state.videos} handler={this.deleteVideo}/>)
               }
           </ul>
       </div>

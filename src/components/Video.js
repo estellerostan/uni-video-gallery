@@ -8,6 +8,8 @@ class Video extends React.Component {
         this.deleteVideo = this.deleteVideo.bind(this);
 
         this.state = {
+            videos: props.videos,
+
             apiResponseMessage : "",
             url: props.details.url,
             title: props.details.title,
@@ -15,7 +17,7 @@ class Video extends React.Component {
         }
     }
 
-    deleteVideo(event) {
+    deleteVideo(event, key) {
         event.preventDefault();
         const data = new FormData();
 
@@ -33,10 +35,13 @@ class Video extends React.Component {
         }).catch((error) => {
             console.error(error);
         });
+
+        // then update state
+        this.props.handler(key)
     }
 
     render () {
-        const { details, index} = this.props;
+        const { details, index, videos} = this.props;
 
         // we want a valid playbackId for our src video
         // but it can come in different url formats
@@ -74,7 +79,7 @@ class Video extends React.Component {
 
                 <UpdateVideoForm details={details}/>
 
-                <button onClick={this.deleteVideo}>Supprimer</button>
+                <button onClick={(e) => this.deleteVideo(e, index)} >Supprimer</button>
                 <p >Message de réponse API : {this.state.apiResponseMessage}</p>
             </li>
         )

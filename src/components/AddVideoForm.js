@@ -7,6 +7,7 @@ class AddVideoForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.state = {
+            videos: props.videos,
             apiResponseMessage: props.apiResponseMessage
         }
     }
@@ -30,7 +31,14 @@ class AddVideoForm extends React.Component {
             console.error(error);
         });
 
-        // this.getvideosFromApiAsync('http://localhost:8080/api/videos');
+        // then update state
+        const video = {
+            url: data.get('url'),
+            title: data.get('title'),
+            description: data.get('description')
+        }
+
+        this.props.handler(video)
     }
 
     render () {
