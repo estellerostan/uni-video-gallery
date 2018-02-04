@@ -7,7 +7,7 @@ class UpdateVideoForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.state = {
-            apiResponseMessage: props.apiResponseMessage,
+            apiResponseMessage: "",
             title: props.details.title,
             description: props.details.description
         }
@@ -32,6 +32,8 @@ class UpdateVideoForm extends React.Component {
             return response.json();
         }).then(json => {
             this.setState({apiResponseMessage : json.message});
+            // then update state to know the api response message
+            this.props.handler(this.state.apiResponseMessage)
         }).catch((error) => {
             console.error(error);
         });
@@ -63,7 +65,6 @@ class UpdateVideoForm extends React.Component {
 
                 <button>Modifier cette video</button>
 
-                <p >Message de réponse API : {this.state.apiResponseMessage}</p>
             </fieldset>
         </form>
         )

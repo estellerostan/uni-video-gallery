@@ -43,19 +43,26 @@ class App extends Component {
         })
     }
 
-    deleteVideo(key) {
+    deleteVideo(key, apiResponseMessage) {
         const videos = {...this.state.videos};
         delete videos[key];
-        this.setState({videos: videos});
+
+        this.setState({
+            videos: videos,
+            apiResponseMessage: apiResponseMessage
+        })
     }
 
-    addVideo(video) {
+    addVideo(video, apiResponseMessage) {
         const videos = {...this.state.videos};
 
         const timestamp = Date.now();
         videos[`video-${timestamp}`] = video;
 
-        this.setState({ videos: videos})
+        this.setState({
+            videos: videos,
+            apiResponseMessage: apiResponseMessage
+        })
     }
 
     render() {

@@ -6,11 +6,12 @@ class Video extends React.Component {
         super(props);
 
         this.deleteVideo = this.deleteVideo.bind(this);
+        this.updateVideo = this.updateVideo.bind(this);
 
         this.state = {
             videos: props.videos,
 
-            apiResponseMessage : "",
+            apiResponseMessage : "bbb",
             url: props.details.url,
             title: props.details.title,
             description: props.details.description
@@ -32,12 +33,15 @@ class Video extends React.Component {
             return response.json();
         }).then(json => {
             this.setState({apiResponseMessage : json.message});
+            // then update state
+            this.props.handler(key, this.state.apiResponseMessage)
         }).catch((error) => {
             console.error(error);
         });
+    }
 
-        // then update state
-        this.props.handler(key)
+    updateVideo(msg) {
+        this.setState({ apiResponseMessage: msg })
     }
 
     render () {
@@ -77,10 +81,9 @@ class Video extends React.Component {
                 </h3>
                 <p>{details.description}</p>
 
-                <UpdateVideoForm details={details}/>
+                <UpdateVideoForm details={details} handler={this.updateVideo}/>
 
                 <button onClick={(e) => this.deleteVideo(e, index)} >Supprimer</button>
-                <p >Message de réponse API : {this.state.apiResponseMessage}</p>
             </li>
         )
     }

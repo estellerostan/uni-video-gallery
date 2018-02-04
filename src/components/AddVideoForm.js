@@ -8,7 +8,7 @@ class AddVideoForm extends React.Component {
 
         this.state = {
             videos: props.videos,
-            apiResponseMessage: props.apiResponseMessage
+            apiResponseMessage: ""
         }
     }
 
@@ -27,18 +27,16 @@ class AddVideoForm extends React.Component {
             return response.json();
         }).then(json => {
             this.setState({apiResponseMessage : json.message});
+            // then update state
+            const video = {
+                url: data.get('url'),
+                title: data.get('title'),
+                description: data.get('description')
+            }
+            this.props.handler(video, this.state.apiResponseMessage)
         }).catch((error) => {
             console.error(error);
         });
-
-        // then update state
-        const video = {
-            url: data.get('url'),
-            title: data.get('title'),
-            description: data.get('description')
-        }
-
-        this.props.handler(video)
     }
 
     render () {
@@ -66,7 +64,6 @@ class AddVideoForm extends React.Component {
 
                 <button>Ajouter cette video !</button>
 
-                <p >Message de réponse API : {this.state.apiResponseMessage}</p>
             </fieldset>
         </form>
         )
